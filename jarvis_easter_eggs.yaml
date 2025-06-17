@@ -1,5 +1,7 @@
-alias: Jarvis Easter Eggs
-description: ""
+blueprint:
+  name: JARVIS Easter Eggs
+  description: Fun phrases that trigger responses from Home Assistant Assist
+  domain: automation
 triggers:
   - alias: When the sentence 'introduce yourself' is said (Custom)
     trigger: conversation

@@ -1,0 +1,131 @@
+alias: Jarvis Easter Eggs
+description: ""
+triggers:
+  - alias: When the sentence 'introduce yourself' is said (Custom)
+    trigger: conversation
+    command:
+      - introduce yourself
+      - can you introduce yourself
+      - will you introduce yourself
+      - please introduce yourself
+      - jarvis introduce yourself
+      - jarvis can you introduce yourself
+      - jarvis will you introduce yourself
+      - jarvis please introduce yourself
+    id: introduce yourself
+  - trigger: conversation
+    command:
+      - are you up
+      - jarvis are you up
+    id: are you up
+  - trigger: conversation
+    command:
+      - why don't we just keep everything on my private server
+      - why don't we keep everything on my private server
+    id: private server
+  - trigger: conversation
+    command:
+      - you there
+      - jarvis you there
+    id: you there
+  - trigger: conversation
+    command:
+      - Wake up daddy's home
+    id: daddys home
+  - trigger: conversation
+    command:
+      - You ever hear the tale of Jonah
+      - have you ever heard the tale of Jonah
+      - ever heard the tale of Jonah
+    id: the tale of jonah
+  - trigger: conversation
+    command:
+      - Ever been to Tennessee jarvis
+      - Ever been to Tennessee
+    id: Ever been to Tennessee
+  - trigger: conversation
+    command:
+      - is it that time
+      - Uh say Jarvis is it that time
+      - is it that time jarvis
+      - say Jarvis is it that time
+    id: is it that time
+  - trigger: conversation
+    command:
+      - You know what to do
+    id: You know what to do
+  - trigger: conversation
+    command:
+      - Alright what do you say
+      - what do you say
+      - Alright what do you say jarvis
+    id: Alright what do you say
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - introduce yourself
+        sequence:
+          - set_conversation_response: >-
+              Allow me to introduce myself. I am Jarvis, a virtual Artificial
+              Intelligence, and I'm here to assist you with a variety of tasks
+              as best I can. 24 hours a day, seven 7 a week. Importing all
+              preferences from home interface. Systems are now fully
+              operational.
+      - conditions:
+          - condition: trigger
+            id:
+              - are you up
+        sequence:
+          - set_conversation_response: for you sir, always.
+      - conditions:
+          - condition: trigger
+            id:
+              - private server
+        sequence:
+          - set_conversation_response: Working on a secret project, are we, sir?
+      - conditions:
+          - condition: trigger
+            id:
+              - you there
+        sequence:
+          - set_conversation_response: At your service, sir.
+      - conditions:
+          - condition: trigger
+            id:
+              - daddys home.
+        sequence:
+          - set_conversation_response: Welcome home, sir.
+      - conditions:
+          - condition: trigger
+            id:
+              - the tale of jonah
+        sequence:
+          - set_conversation_response: I wouldn't consider him a role model.
+      - conditions:
+          - condition: trigger
+            id:
+              - Ever been to Tennessee
+        sequence:
+          - set_conversation_response: Creating a flight plan for Tennessee.
+      - conditions:
+          - condition: trigger
+            id:
+              - is it that time
+        sequence:
+          - set_conversation_response: The House Party Protocol, sir?
+      - conditions:
+          - condition: trigger
+            id:
+              - You know what to do
+        sequence:
+          - set_conversation_response: The Clean Slate Protocol, sir?
+      - conditions:
+          - condition: trigger
+            id:
+              - Alright what do you say
+        sequence:
+          - set_conversation_response: I have indeed been uploaded sir. We're online and ready.
+mode: single

@@ -3,20 +3,22 @@ blueprint:
   description: Fun easter eggs that trigger responsesthe from the Iron Man movies for home assistant voice assistants.
   domain: automation
   input:
-  target_speaker:
-    name: Speaker
-    description: The speaker Audio will play on.
-    selector:
-      entity:
-        filter:
-          - domain: media_player
-  volumne:
-    name: Speaker Volume
-    description: The volume the speaker willl play audio easter eggs at. A number [0 - 1] for example `0.25`.
-    selector:
-      entity:
-        filter:
-          - domain: input_number
+    target_speaker:
+      name: Speaker
+      description: The speaker Audio will play on.
+      selector:
+        entity:
+          filter:
+            - domain: media_player
+    volume:
+      name: Speaker Volume
+      description: The volume the speaker will play audio easter eggs at. A number [0 - 1] for example `0.25`.
+      selector:
+        number:
+          min: 0
+          max: 1
+          step: 0.01
+
 triggers:
   - alias: When the sentence 'introduce yourself' is said (Custom)
     trigger: conversation

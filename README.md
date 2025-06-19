@@ -3,6 +3,8 @@
 
 Jarvis integrated as the voice of Home Assistant. This repository contains audio and prompts to complete the Jarvis experience alongside a great project that emulates Jarvis's voice from Marvel movies. This brings together many great projects to get Jarvis working as an AI-powered assistant for your smart home.
 
+Check out the easter egg phrases [here](https://github.com/andrewamidei/Home-Assistant-JARVIS-Assist/blob/main/easter_eggs_list.md).
+
 ## Parts of this project
 
 ### Requirements
@@ -42,7 +44,7 @@ Firstly I don't have a full guide on how to set all parts of this up, but I plan
 ### Giving Jarvis his voice
 - Download the [Jarvis Voice Model](https://huggingface.co/jgkawell/jarvis)
 - Navigate to the folder with the `.onnx` file. There is a medium and high model and I would grab them both.
-- Using [samba share](https://github.com/home-assistant/addons/blob/master/samba/DOCS.md) place the `.onnx` and the `.onnx.json` files in the share/piper folder for each model you want (you may need to make the piper folder).
+- Using [samba share](https://github.com/home-assistant/addons/blob/master/samba/DOCS.md), place the `.onnx` and the `.onnx.json` files in the share/piper folder for each model you want (you may need to make the piper folder).
 - You will need to restart Piper but I prefer restarting Home Assistant so do one of those now.
 - After Home Assistant has restarted, navigate to `Settings>Add-ons>Piper>Configuration`.
 - These settings affect how the voice sounds and I have found what appears to work best with this Jarvis model:
@@ -59,13 +61,12 @@ Firstly I don't have a full guide on how to set all parts of this up, but I plan
 - You can try the voice by hitting `Try Voice` and entering in some text.
 
 ### Adding Easter Eggs
-- use the `jarvis_easter_egg.yaml` file provided or the button below to import the easter eggs.
+- Copy the files from the `audio clips` folder and place them into the media forlder on the smb share using [samba share](https://github.com/home-assistant/addons/blob/master/samba/DOCS.md).
+- Use the `jarvis_easter_egg.yaml` file provided or the button below to import the easter eggs.
 
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fandrewamidei%2FHome-Assistant-jarvis-Assist%2Fblob%2Fmain%2Fjarvis_easter_eggs.yaml)
 
 ## Optimization Recommendations
 - When exposing entities, if a device is called `bedroom lamp` add and alias called `the bedroom lamp` to clear up issues when using the word "the" in commands.
 - Run LLM's on GPU resourses. Especially for a voice assistant.
-
-
 

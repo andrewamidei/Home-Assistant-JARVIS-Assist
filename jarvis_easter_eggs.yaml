@@ -1,7 +1,22 @@
 blueprint:
   name: JARVIS Easter Eggs
-  description: Fun phrases that trigger responses from Home Assistant Assist
+  description: Fun easter eggs that trigger responsesthe from the Iron Man movies for home assistant voice assistants.
   domain: automation
+  input:
+  target_speaker:
+    name: Speaker
+    description: The speaker Audio will play on.
+    selector:
+      entity:
+        filter:
+          - domain: media_player
+  volumne:
+    name: Speaker Volume
+    description: The volume the speaker willl play audio easter eggs at. A number [0 - 1] for example `0.25`.
+    selector:
+      entity:
+        filter:
+          - domain: input_number
 triggers:
   - alias: When the sentence 'introduce yourself' is said (Custom)
     trigger: conversation
@@ -18,50 +33,76 @@ triggers:
   - trigger: conversation
     command:
       - are you up
+      - you up
       - jarvis are you up
+      - jarvis you up
     id: are you up
   - trigger: conversation
     command:
       - why don't we just keep everything on my private server
       - why don't we keep everything on my private server
+      - jarvis why don't we just keep everything on my private server
+      - jarvis why don't we keep everything on my private server
     id: private server
   - trigger: conversation
     command:
       - you there
       - jarvis you there
+      - you're there
+      - ya there
     id: you there
   - trigger: conversation
     command:
-      - Wake up daddy's home
+      - alright what do you say
+      - what do you say
+      - alright what do you say jarvis
+    id: alright what do you say
+  - trigger: conversation
+    command:
+      - wake up daddy's home
+      - jarvis wake up daddy's home
     id: daddys home
   - trigger: conversation
     command:
-      - You ever hear the tale of Jonah
+      - you ever hear the tale of Jonah
       - have you ever heard the tale of Jonah
       - ever heard the tale of Jonah
+      - jarvis you ever hear the tale of Jonah
+      - jarvis have you ever heard the tale of Jonah
+      - jarvis ever heard the tale of Jonah
     id: the tale of jonah
   - trigger: conversation
     command:
-      - Ever been to Tennessee jarvis
-      - Ever been to Tennessee
-    id: Ever been to Tennessee
+      - ever been to tennessee jarvis
+      - ever been to tennessee
+      - jarvis ever been to tennessee
+    id: ever been to tennessee
   - trigger: conversation
     command:
+      - uh say Jarvis is it that time
       - is it that time
-      - Uh say Jarvis is it that time
       - is it that time jarvis
       - say Jarvis is it that time
     id: is it that time
   - trigger: conversation
     command:
-      - You know what to do
-    id: You know what to do
+      - you know what to do
+      - jarvis you know what to do
+    id: you know what to do
   - trigger: conversation
     command:
-      - Alright what do you say
-      - what do you say
-      - Alright what do you say jarvis
-    id: Alright what do you say
+      - sometimes you got to run before you can walk
+      - sometimes you gotta run before you can walk
+      - jarvis sometimes you got to run before you can walk
+      - jarvis sometimes you gotta run before you can walk
+    id: sometimes you gotta run before you can walk
+  - trigger: conversation
+    command:
+      - the truth is i am iron man
+      - the truth is
+      - jarvis the truth is i am iron man
+      - jarvis the truth is
+    id: the truth is i am iron man
 conditions: []
 actions:
   - choose:
@@ -73,7 +114,7 @@ actions:
           - set_conversation_response: >-
               Allow me to introduce myself. I am Jarvis, a virtual Artificial
               Intelligence, and I'm here to assist you with a variety of tasks
-              as best I can. 24 hours a day, seven 7 a week. Importing all
+              as best I can. 24 hours a day, 7 days a week. Importing all
               preferences from home interface. Systems are now fully
               operational.
       - conditions:
@@ -91,12 +132,6 @@ actions:
       - conditions:
           - condition: trigger
             id:
-              - you there
-        sequence:
-          - set_conversation_response: At your service, sir.
-      - conditions:
-          - condition: trigger
-            id:
               - daddys home.
         sequence:
           - set_conversation_response: Welcome home, sir.
@@ -109,7 +144,7 @@ actions:
       - conditions:
           - condition: trigger
             id:
-              - Ever been to Tennessee
+              - ever been to tennessee
         sequence:
           - set_conversation_response: Creating a flight plan for Tennessee.
       - conditions:
@@ -121,13 +156,108 @@ actions:
       - conditions:
           - condition: trigger
             id:
-              - You know what to do
+              - you know what to do
         sequence:
           - set_conversation_response: The Clean Slate Protocol, sir?
       - conditions:
           - condition: trigger
             id:
-              - Alright what do you say
+              - sometimes you gotta run before you can walk
         sequence:
-          - set_conversation_response: I have indeed been uploaded sir. We're online and ready.
+          - set_conversation_response: ""
+            enabled: true
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - action: media_player.volume_set
+            metadata: {}
+            data:
+              volume_level: !input volume
+            target:
+              entity_id: !input target_speaker
+          - action: media_player.play_media
+            target:
+              entity_id: !input target_speaker
+            data:
+              media_content_id: media-source://media_source/media/iron_man_first_flight.wav
+              media_content_type: audio/x-wav
+            metadata:
+              title: iron_man_first_flight.wav
+              thumbnail: null
+              media_class: music
+              children_media_class: null
+              navigateIds:
+                - {}
+                - media_content_type: app
+                  media_content_id: media-source://media_source
+      - conditions:
+          - condition: trigger
+            id:
+              - you there
+              - alright what do you say
+        sequence:
+          - set_conversation_response: ""
+            enabled: true
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - action: media_player.volume_set
+            metadata: {}
+            data:
+              volume_level: !input volume
+            target:
+              entity_id: !input target_speaker
+          - action: media_player.play_media
+            target:
+              entity_id: !input target_speaker
+            data:
+              media_content_id: media-source://media_source/media/iron_man_suit_setup.wav
+              media_content_type: audio/x-wav
+            metadata:
+              title: iron_man_suit_setup.wav
+              thumbnail: null
+              media_class: music
+              children_media_class: null
+              navigateIds:
+                - {}
+                - media_content_type: app
+                  media_content_id: media-source://media_source
+      - conditions:
+          - condition: trigger
+            id:
+              - the truth is i am iron man
+        sequence:
+          - set_conversation_response: ""
+            enabled: true
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - action: media_player.volume_set
+            metadata: {}
+            data:
+              volume_level: !input volume
+            target:
+              entity_id: !input target_speaker
+          - action: media_player.play_media
+            target:
+              entity_id: !input target_speaker
+            data:
+              media_content_id: media-source://media_source/media/the_truth_is_i_am_iron_man.wav
+              media_content_type: audio/x-wav
+            metadata:
+              title: the_truth_is_i_am_iron_man.wav
+              thumbnail: null
+              media_class: music
+              children_media_class: null
+              navigateIds:
+                - {}
+                - media_content_type: app
+                  media_content_id: media-source://media_source
 mode: single
+

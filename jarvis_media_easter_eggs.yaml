@@ -1,6 +1,12 @@
 blueprint:
   name: JARVIS Media Easter Eggs
-  description: Fun easter eggs that trigger responses the from the Iron Man movies for home assistant voice assistants.
+  description: |
+    Fun easter eggs that trigger responses the from the Iron Man movies for home assistant voice assistants.
+    Easter Eggs Include:
+    - You there?/Alright what do you say?
+    - Sometimes you got to run before you can walk.
+    - The truth is...
+    - Drop my needle.
   domain: automation
   input:
     target_satellite:

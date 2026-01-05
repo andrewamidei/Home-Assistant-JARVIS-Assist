@@ -1,6 +1,15 @@
 blueprint:
   name: JARVIS Easter Eggs
-  description: Fun easter eggs that trigger responses the from the Iron Man movies for home assistant voice assistants.
+  description: |
+    Fun easter eggs that trigger responses the from the Iron Man movies for home assistant voice assistants.
+    Easter Eggs Include:
+    - Are you up?
+    - Why don't we just keep everything on my private server.
+    - Wake up daddy's home.
+    - You ever hear the tale of Jonah?
+    - Ever been to Tennessee?
+    - Uh say Jarvis is it that time?
+    - You know what to do.
   domain: automation
 triggers:
   - trigger: conversation

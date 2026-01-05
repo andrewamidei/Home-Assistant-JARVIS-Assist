@@ -80,7 +80,7 @@ Firstly I don't have a full guide on how to set all parts of this up, but I plan
             - Triggered by: `you there` or `alright what do you say` = iron_man_suit_setup.wav
             - Triggered by: `sometimes you gotta run before you can walk` = iron_man_first_flight.wav
             - Triggered by: `the truth is i am iron man` = the_truth_is_i_am_iron_man.wav
-        - The last option in the list is the `drop my needle option` and within that automation you can replace the ``music assistant play media` with any other media you would like to play or you can change the song it plays if music assistant is setup.
+        - The last option in the list is the `drop my needle option` and within that automation you can replace the `music assistant play media` with any other media you would like to play or you can change the song it plays if music assistant is setup.
 
 ## Optimization Recommendations
 - When exposing entities, if a device is called `bedroom lamp` add and alias called `the bedroom lamp` to clear up issues when using the word "the" in commands.

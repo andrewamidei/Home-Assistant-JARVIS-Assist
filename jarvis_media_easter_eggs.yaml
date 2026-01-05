@@ -72,9 +72,9 @@ actions:
                     - {}
                     - media_content_type: app
                       media_content_id: media-source://media_source
-                  browse_entity_id: !input target_satellite
+                  browse_entity_id: !input target_speaker
             target:
-              entity_id: !input target_satellite
+              entity_id: !input target_speaker
       - conditions:
           - condition: trigger
             id:
@@ -96,9 +96,9 @@ actions:
                     - {}
                     - media_content_type: app
                       media_content_id: media-source://media_source
-                  browse_entity_id: !input target_satellite
+                  browse_entity_id: !input target_speaker
             target:
-              entity_id: !input target_satellite
+              entity_id: !input target_speaker
       - conditions:
           - condition: trigger
             id:
@@ -121,9 +121,9 @@ actions:
                     - {}
                     - media_content_type: app
                       media_content_id: media-source://media_source
-                  browse_entity_id: !input target_satellite
+                  browse_entity_id: !input target_speaker
             target:
-              entity_id: !input target_satellite
+              entity_id: !input target_speaker
       - conditions:
           - condition: trigger
             id:
@@ -137,5 +137,5 @@ actions:
               media_type: track
               enqueue: replace
             target:
-              entity_id: !input target_satellite
+              entity_id: !input target_speaker
 mode: single

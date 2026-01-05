@@ -18,7 +18,7 @@ Check out the easter egg phrases [here](https://github.com/andrewamidei/Home-Ass
 - I don't have a guide for setting these devices up but you can look here for more information: https://www.home-assistant.io/voice_control/
 
 ### Aspects of Jarvis
-- **Prompts** - These prompts are currently optimized for smaller LLMs (I recommend Gemma3 or Llama 3.2) that don't have control over Home Assistant (Explained Later).
+- **Prompts** - These prompts are currently optimized for smaller LLMs (I recommend Gemma3 or Llama 3.2) that don't have control over Home Assistant (Explained Later). Note that no prompt is perfect and you may need to add or remove things so the model works effectively.
 - **Easter Egg Responses** - These responses are triggered by quoting parts of the movies and Jarvis will respond with the matching quote. These Easter eggs are also optimized so the wake word can be used alongside the easter egg for a more natural conversation.
 - [**Jarvis Voice**](https://huggingface.co/jgkawell/jarvis) - Trained by [jgkawell](https://huggingface.co/jgkawell).
 
@@ -71,7 +71,16 @@ Firstly I don't have a full guide on how to set all parts of this up, but I plan
 #### Applying blueprints
 - Once you have clicked on the buttons above and added the blueprint to your home assistant click on the blueprint
     - If you are activating the standard blueprint then just click on save in the bottom right corner.
-    - If you are activating the media blueprint then add your voice assistant speaker into the box and then instead of clicking save, go to the three dots in the top right and click on take control, then the save button, and finally give the automation a name. Next look under the "Then do" category for the automation options. Within each of these options you need to take the second action `play media` and replace it with a new `media player play media` option where you will select your speaker again and the id of the media you downloaded earlier. to match up the correct media, just match the audio file up with the respective condition trigger. The last option in the list is the `drop my needle option` and within that automation you can replace the ``music assistant play media` with any other media you would like to play or you can change the song it plays if music assistant is setup.
+    - If you are activating the media blueprint clock on the blueprint and follow the steps below
+        - Add your voice assistant speaker into the `Assist Satellite` box.
+        - Go to the three dots in the top right and click on take control.
+        - Click on the save button
+        - Give the automation a name.
+        - Look under the "Then do" category for the automation options. Within each of these options you need to take the second action `play media` and replace it with a new `media player play media` option where you will select your target speaker and the  media you downloaded earlier by clicking on pick media and then the my media folder. Match the audio file up with the respective condition trigger as listed below (Note: once you setup one of the media player actions, you can copy it using the three dots menu, paste it in each of the other media player option and simply change the wav file that will play.)
+            - Triggered by: `you there` or `alright what do you say` = iron_man_suit_setup.wav
+            - Triggered by: `sometimes you gotta run before you can walk` = iron_man_first_flight.wav
+            - Triggered by: `the truth is i am iron man` = the_truth_is_i_am_iron_man.wav
+        - The last option in the list is the `drop my needle option` and within that automation you can replace the ``music assistant play media` with any other media you would like to play or you can change the song it plays if music assistant is setup.
 
 ## Optimization Recommendations
 - When exposing entities, if a device is called `bedroom lamp` add and alias called `the bedroom lamp` to clear up issues when using the word "the" in commands.

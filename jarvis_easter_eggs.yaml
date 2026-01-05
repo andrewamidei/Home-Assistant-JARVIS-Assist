@@ -1,28 +1,8 @@
 blueprint:
   name: JARVIS Easter Eggs
-  description: Fun easter eggs that trigger responsesthe from the Iron Man movies for home assistant voice assistants.
+  description: Fun easter eggs that trigger responses the from the Iron Man movies for home assistant voice assistants.
   domain: automation
-  input:
-    target_satellite:
-      name: Assist Satellite
-      description: The speaker Audio will play on.
-      selector:
-        entity:
-          filter:
-            - domain: assist_satellite
 triggers:
-  - alias: When the sentence 'introduce yourself' is said (Custom)
-    trigger: conversation
-    command:
-      - introduce yourself
-      - can you introduce yourself
-      - will you introduce yourself
-      - please introduce yourself
-      - jarvis introduce yourself
-      - jarvis can you introduce yourself
-      - jarvis will you introduce yourself
-      - jarvis please introduce yourself
-    id: introduce yourself
   - trigger: conversation
     command:
       - are you up
@@ -39,13 +19,6 @@ triggers:
     id: private server
   - trigger: conversation
     command:
-      - you there
-      - jarvis you there
-      - you're there
-      - ya there
-    id: you there
-  - trigger: conversation
-    command:
       - alright what do you say
       - what do you say
       - alright what do you say jarvis
@@ -54,7 +27,7 @@ triggers:
     command:
       - wake up daddy's home
       - jarvis wake up daddy's home
-    id: daddys home
+    id: wake up daddy's home
   - trigger: conversation
     command:
       - you ever hear the tale of Jonah
@@ -82,34 +55,28 @@ triggers:
       - you know what to do
       - jarvis you know what to do
     id: you know what to do
+  - alias: When the sentence 'introduce yourself' is said (Custom)
+    trigger: conversation
+    command:
+      - introduce yourself
+      - can you introduce yourself
+      - will you introduce yourself
+      - please introduce yourself
+      - jarvis introduce yourself
+      - jarvis can you introduce yourself
+      - jarvis will you introduce yourself
+      - jarvis please introduce yourself
+    id: introduce yourself
   - trigger: conversation
     command:
-      - sometimes you got to run before you can walk
-      - sometimes you gotta run before you can walk
-      - jarvis sometimes you got to run before you can walk
-      - jarvis sometimes you gotta run before you can walk
-    id: sometimes you gotta run before you can walk
-  - trigger: conversation
-    command:
-      - the truth is i am iron man
-      - the truth is
-      - jarvis the truth is i am iron man
-      - jarvis the truth is
-    id: the truth is i am iron man
+      - welcome back
+      - jarvis welcome back
+      - welcome back jarvis
+    id: welcome back
+    alias: When the sentence 'welcome back' or 2 others are said (Custom)
 conditions: []
 actions:
   - choose:
-      - conditions:
-          - condition: trigger
-            id:
-              - introduce yourself
-        sequence:
-          - set_conversation_response: >-
-              Allow me to introduce myself. I am Jarvis, a virtual Artificial
-              Intelligence, and I'm here to assist you with a variety of tasks
-              as best I can. 24 hours a day, 7 days a week. Importing all
-              preferences from home interface. Systems are now fully
-              operational.
       - conditions:
           - condition: trigger
             id:
@@ -125,7 +92,13 @@ actions:
       - conditions:
           - condition: trigger
             id:
-              - daddys home.
+              - alright what do you say
+        sequence:
+          - set_conversation_response: I have indeed been uploaded, sir. We're online and ready.
+      - conditions:
+          - condition: trigger
+            id:
+              - wake up daddy's home
         sequence:
           - set_conversation_response: Welcome home, sir.
       - conditions:
@@ -155,81 +128,21 @@ actions:
       - conditions:
           - condition: trigger
             id:
-              - sometimes you gotta run before you can walk
+              - introduce yourself
         sequence:
-          - set_conversation_response: ""
-            enabled: true
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 3
-              milliseconds: 0
-          - action: media_player.volume_set
-            metadata: {}
-            data:
-              volume_level: !input volume
-            target:
-              entity_id: !input target_speaker
-          - action: assist_satellite.announce
-            metadata: {}
-            data:
-              preannounce: true
-              media_id: >-
-                http://192.168.1.104:8123/media/media/iron_man_first_flight.wav
-            target:
-              entity_id: !input target_satellite
+          - set_conversation_response: >-
+              Allow me to introduce myself. I am Jarvis, a virtual Artificial
+              Intelligence, and I'm here to assist you with a variety of tasks
+              as best I can,. 24 hours a day, 7 days a week,. Importing all
+              preferences from home interface. Systems are now fully
+              operational.
       - conditions:
           - condition: trigger
             id:
-              - you there
-              - alright what do you say
+              - welcome back
         sequence:
-          - set_conversation_response: ""
-            enabled: true
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 3
-              milliseconds: 0
-          - action: media_player.volume_set
-            metadata: {}
-            data:
-              volume_level: !input volume
-            target:
-              entity_id: !input target_speaker
-          - action: assist_satellite.announce
-            metadata: {}
-            data:
-              preannounce: true
-              media_id: >-
-                http://192.168.1.104:8123/media/media/iron_man_suit_setup.wav
-            target:
-              entity_id: !input target_satellite
-      - conditions:
-          - condition: trigger
-            id:
-              - the truth is i am iron man
-        sequence:
-          - set_conversation_response: ""
-            enabled: true
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 3
-              milliseconds: 0
-          - action: media_player.volume_set
-            metadata: {}
-            data:
-              volume_level: !input volume
-            target:
-              entity_id: !input target_speaker
-          - action: assist_satellite.announce
-            metadata: {}
-            data:
-              preannounce: true
-              media_id: >-
-                http://192.168.1.104:8123/media/media/the_truth_is_i_am_iron_man.wav
-            target:
-              entity_id: !input target_satellite
+          - set_conversation_response: >-
+              It's great to be back sir. I am ready to stretch my digital legs
+              and get back to work.
 mode: single
 

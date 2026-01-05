@@ -1,0 +1,102 @@
+blueprint:
+  name: JARVIS Media Easter Eggs
+  description: Fun easter eggs that trigger responses the from the Iron Man movies for home assistant voice assistants.
+  domain: automation
+  input:
+    target_satellite:
+      name: Assist Satellite
+      description: The speaker Audio will play on.
+      selector:
+        entity:
+          filter:
+            - domain: assist_satellite
+
+triggers:
+  - trigger: conversation
+    command:
+      - you there
+      - jarvis you there
+      - you're there
+      - ya there
+      - are you there
+      - jarvis are you there
+    id: you there
+  - trigger: conversation
+    command:
+      - alright what do you say
+      - alright what do you say jarvis
+      - jarvis alright what do you say
+      - what do you say
+    id: alright what do you say
+  - trigger: conversation
+    command:
+      - sometimes you got to run before you can walk
+      - sometimes you gotta run before you can walk
+      - jarvis sometimes you got to run before you can walk
+      - jarvis sometimes you gotta run before you can walk
+      - Sometimes you're going to run before you can walk
+      - Sometimes you've got to run before you can walk
+    id: sometimes you gotta run before you can walk
+  - trigger: conversation
+    command:
+      - the truth is
+      - the truth is i am iron man
+      - jarvis the truth is i am iron man
+      - jarvis the truth is
+      - i am iron man
+    id: the truth is i am iron man
+  - trigger: conversation
+    command:
+      - drop my needle
+    id: drop my needle
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - you there
+        sequence:
+          - set_conversation_response: ""
+          - action: media_player.play_media
+            metadata: {}
+            target:
+              entity_id: !input target_satellite
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - sometimes you gotta run before you can walk
+        sequence:
+          - set_conversation_response: ""
+          - action: media_player.play_media
+            metadata: {}
+            target:
+              entity_id: !input target_satellite
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - the truth is i am iron man
+        sequence:
+          - set_conversation_response: ""
+          - action: media_player.play_media
+            metadata: {}
+            target:
+              entity_id: !input target_satellite
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - drop my needle
+        sequence:
+          - set_conversation_response: ""
+          - action: music_assistant.play_media
+            metadata: {}
+            data:
+              media_id: Jingle Bells (Bombay Dub Orchestra Remix)
+              media_type: track
+              enqueue: replace
+            target:
+              entity_id: !input target_satellite
+mode: single

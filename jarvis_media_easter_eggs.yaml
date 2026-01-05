@@ -6,6 +6,7 @@ blueprint:
     - You there?/Alright what do you say?
     - Sometimes you got to run before you can walk.
     - The truth is...
+    - Drop my needle.
   domain: automation
   input:
     target_satellite:

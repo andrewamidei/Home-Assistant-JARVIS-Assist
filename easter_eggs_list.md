@@ -15,8 +15,7 @@ All of these responses can be used with or without the word Jarvis. Meaning, you
 - Welcome back.
 
 ### Audio Clip Responses (found in media blueprint)
-- You there?
-- Alright what do you say?
+- You there?/Alright what do you say?
 - Sometimes you got to run before you can walk.
 - The truth is...
 - Drop my needle. (NOTE: This response will play the Jingle Bells - Bombay Dub Orchestra Remix if you have music assistant, otherwise you will need to manually set another sound for this action).

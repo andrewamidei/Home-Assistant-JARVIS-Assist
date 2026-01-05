@@ -10,6 +10,7 @@ blueprint:
         entity:
           filter:
             - domain: assist_satellite
+
 triggers:
   - trigger: conversation
     command:
@@ -59,22 +60,9 @@ actions:
           - set_conversation_response: ""
           - action: media_player.play_media
             metadata: {}
-            data:
-              media:
-                media_content_id: media-source://media_source/media/iron_man_suit_setup.wav
-                media_content_type: audio/x-wav
-                metadata:
-                  title: iron_man_suit_setup.wav
-                  thumbnail: null
-                  media_class: music
-                  children_media_class: null
-                  navigateIds:
-                    - {}
-                    - media_content_type: app
-                      media_content_id: media-source://media_source
-                  browse_entity_id: !input target_speaker
             target:
-              entity_id: !input target_speaker
+              entity_id: !input target_satellite
+            data: {}
       - conditions:
           - condition: trigger
             id:
@@ -83,22 +71,9 @@ actions:
           - set_conversation_response: ""
           - action: media_player.play_media
             metadata: {}
-            data:
-              media:
-                media_content_id: media-source://media_source/media/iron_man_first_flight.wav
-                media_content_type: audio/x-wav
-                metadata:
-                  title: iron_man_first_flight.wav
-                  thumbnail: null
-                  media_class: music
-                  children_media_class: null
-                  navigateIds:
-                    - {}
-                    - media_content_type: app
-                      media_content_id: media-source://media_source
-                  browse_entity_id: !input target_speaker
             target:
-              entity_id: !input target_speaker
+              entity_id: !input target_satellite
+            data: {}
       - conditions:
           - condition: trigger
             id:
@@ -107,23 +82,9 @@ actions:
           - set_conversation_response: ""
           - action: media_player.play_media
             metadata: {}
-            data:
-              media:
-                media_content_id: >-
-                  media-source://media_source/media/the_truth_is_i_am_iron_man.wav
-                media_content_type: audio/x-wav
-                metadata:
-                  title: the_truth_is_i_am_iron_man.wav
-                  thumbnail: null
-                  media_class: music
-                  children_media_class: null
-                  navigateIds:
-                    - {}
-                    - media_content_type: app
-                      media_content_id: media-source://media_source
-                  browse_entity_id: !input target_speaker
             target:
-              entity_id: !input target_speaker
+              entity_id: !input target_satellite
+            data: {}
       - conditions:
           - condition: trigger
             id:
@@ -137,5 +98,5 @@ actions:
               media_type: track
               enqueue: replace
             target:
-              entity_id: !input target_speaker
+              entity_id: !input target_satellite
 mode: single

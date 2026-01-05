@@ -30,12 +30,13 @@ Firstly I don't have a full guide on how to set all parts of this up, but I plan
 - In the `Add Assistant` configuration set the name and language for your assistant
 - In the `Conversation agent` select your LLM, if none shows up, you need to check if you have a compatible LLM.
 - After selecting the LLM hit the settings cog next to the dropdown and paste in your desired prompt.
+    - Note that adding a LLM alongside default home assistant control means that you may need to increase the size of the speech-to-text model as home assistant wont use very strong fuzzy matching making speech-to-text more important.
     - If you want the LLM to control your smart home directly enable Control Home Assistant Assist. This is not recommended unless you have a larger model (roughly 20B Parameters or more).
     - Keep the default context window unless you have a small LLM or want to speed up the response time of the LLM (I recommend 4096).
     - For `max history Messages` and `Keep Alive` you need to set them based on how you want things to be remembered. Max history messages will work on models hours later while Keep alive will remember the active conversation until the model is purged from memory.
         - **For example**: I set max history Messages to zero and Keep Alive to 60 so an active conversation holds context for 60 seconds but if I ask it something much later it won't remember the last conversation. This keeps the response times fast.
     - Hit submit.
-- For speech-to-text, I found `faster-whisper` the best balance for speed and accuracy running on a CPU.
+- For speech-to-text, I found `faster-whisper` with the `small.en` model was the best balance for speed and accuracy running on a CPU.
 - Hit `update` for now.
 - Move on to the next section to give Jarvis his voice.
 

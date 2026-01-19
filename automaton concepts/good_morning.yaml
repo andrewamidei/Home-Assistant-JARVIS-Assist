@@ -1,0 +1,272 @@
+alias: Good Morning
+description: ""
+triggers:
+  - trigger: conversation
+    command: good morning
+    id: good morning
+conditions: []
+actions:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id: media_player.esp_s3_jarvis_speaker
+    data:
+      volume_level: 0.3
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    enabled: true
+    target:
+      entity_id: script.turn_on_media_room_lights
+  - metadata: {}
+    data:
+      duration:
+        hours: 18
+        minutes: 0
+        seconds: 0
+    target:
+      entity_id: calendar.personal
+    response_variable: TodaysEvents
+    action: calendar.get_events
+  - metadata: {}
+    data:
+      duration:
+        hours: 18
+        minutes: 0
+        seconds: 0
+    response_variable: FamilyEvents
+    action: calendar.get_events
+    target:
+      entity_id: calendar.family_calendar
+  - action: weather.get_forecasts
+    metadata: {}
+    target:
+      entity_id: weather.forecast_home
+    data:
+      type: hourly
+    response_variable: HourlyForecast
+    alias: "Weather: Get hourly forecasts"
+  - action: weather.get_forecasts
+    metadata: {}
+    target:
+      entity_id: weather.forecast_home
+    data:
+      type: daily
+    response_variable: DailyForecast
+    alias: "Weather: Get daily forecasts"
+  - set_conversation_response: >-
+      Good Morning sir,
+
+      {#- Current date and time -#}
+
+      {%- set init = namespace(msg='') -%}
+
+      {%- set m = now().strftime(':%M') -%}
+
+      {%- set p = now().strftime('%p') -%}
+
+      {%- set init.msg = ' It is {}{} {}, '.format(now().strftime('%B %-d,
+      %-I'), '' if m == ":00" else m, p) -%}
+
+      {{ init.msg }}
+
+
+      {#- Holiday today (if any) -#}
+
+      {%- set cal = states.calendar.holidays_in_united_states -%}
+
+      {%- set start = cal.attributes.start_time if cal else None -%}
+
+      {%- if not start -%}
+
+      {%- else -%}
+        {%- set dt = start | as_datetime | as_local -%}
+        {%- if dt.date() == now().date() -%}
+          Today is {{ cal.attributes.message }},
+        {%- endif -%}
+      {%- endif -%}
+
+
+      {#- Weather -#}
+
+      {%- set now_local = now() -%}
+
+      {%- set end_of_day = today_at() + timedelta(days=1) -%}
+
+
+      {#-  Capture today's daily forecast -#}
+
+      {%- set daily_today = namespace(item=None) -%}
+
+      {%- for d in DailyForecast['weather.forecast_home'].forecast -%}
+        {%- set dt = as_local(as_datetime(d.datetime)) -%}
+        {%- if daily_today.item is none and dt.date() == now_local.date() -%}
+          {%- set daily_today.item = d -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+
+      {#-  Build list of remaining hourly temperatures for today (exclude past
+      hours)  -#}
+
+      {%- set ns = namespace(temps=[]) -%}
+
+      {%- for h in HourlyForecast['weather.forecast_home'].forecast -%}
+        {%- set ht = as_local(as_datetime(h.datetime)) -%}
+        {%- if ht >= now_local and ht < end_of_day -%}
+          {%- set ns.temps = ns.temps + [h.temperature] -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- set temps = ns.temps -%}
+
+      {%- set t_low = (temps|min)|round(0) if temps|length > 0 else none -%}
+
+      {%- set t_high = (temps|max)|round(0) if temps|length > 0 else none -%}
+
+
+      {#-  Pull daily metrics  -#}
+
+      {%- if daily_today.item is not none -%}
+        {%- set cond_raw = daily_today.item.condition -%}
+        {%- set uv = daily_today.item.uv_index|default(none) -%}
+        {%- set wind = daily_today.item.wind_speed|default(none) -%}
+        {%- set precip_amt = daily_today.item.precipitation|default(0) -%} {#- inches -#}
+        {%- set precip_prob = daily_today.item.precipitation_probability|default(none) -%} {#- percent if available -#}
+        {%- set humidity = daily_today.item.humidity|default(none) -%}
+      {%- else -%}
+        {%- set cond_raw = none -%}
+        {%- set uv = none -%}
+        {%- set wind = none -%}
+        {%- set precip_amt = 0 -%}
+        {%- set precip_prob = none -%}
+        {%- set humidity = none -%}
+      {%- endif -%}
+
+
+      {#-  Condition text: replace hyphens with spaces  -#}
+
+      {%- set condition = (cond_raw|replace('-', ' ')) if cond_raw is string
+      else cond_raw -%}
+
+
+      {# -  UV index (include if 6 or higher)  -#}
+
+      {%- set uv_text = (
+        'high' if uv is number and uv >= 6 and uv <= 7 else
+        'very high' if uv is number and uv <= 10 else
+        'extreme' if uv is number and uv > 10 else
+        none
+      ) -%}
+
+      {%- set include_uv = (uv is number and uv >= 6) -%}
+
+
+      {#-  Precipitation phrasing and inclusion logic (include if prob >= 1%)
+      -#}
+
+      {%- set precip_in = precip_amt|float(0) -%}
+
+      {%- set include_precip = (
+        (precip_prob is number and precip_prob|int >= 1) or
+        (precip_prob is none and precip_in >= 0.01)
+      ) -%}
+
+      {%- set precip_text = (
+        'around ' ~ (precip_in|round(2)) ~ ' in of precipitation'
+      ) -%}
+
+
+      {#-  Humidity (suppress when between 35% and 55% inclusive)  -#}
+
+      {%- set include_humidity = (humidity is number and (humidity < 35 or
+      humidity > 55)) -%}
+
+
+      {#-  Build the sentence without using .append()  -#}
+
+      {%- set first_part %} Today
+        {%- if condition %} will be {{ condition }}{%- endif -%}
+        {%- if t_low is not none and t_high is not none %} with a low of {{ t_low }} and a high of {{ t_high }}
+        {%- elif t_high is not none -%} with a high of {{ t_high }}
+        {%- elif t_low is not none -%} with a low of {{ t_low }}
+        {%- endif -%},
+      {%- endset -%}
+
+
+      {%- set details = [] -%}
+
+      {%- if include_uv -%}
+        {%- set uv_piece = 'UV index ' ~ uv ~ ( ' (' ~ uv_text ~ ')' if uv_text else '' ) -%}
+        {%- set details = details + [uv_piece] -%}
+      {%- endif -%}
+
+      {%- if wind is not none -%}
+        {%- set details = details + [' winds around ' ~ (wind|round(0)) ~ ' miles per hour'] -%}
+      {%- endif -%}
+
+      {%- if include_humidity -%}
+        {%- set details = details + ['and humidity about ' ~ (humidity|round(0)) ~ '%'] -%}
+      {%- endif -%}
+
+      {%- if include_precip -%}
+        {%- set details = details + [precip_text] -%}
+      {%- endif -%}
+
+
+      {{ first_part }}{%- if details|length > 0 -%} {{ details|join(', ') }},{%-
+      endif -%}
+
+      {#- End of weather -#}
+
+
+      {#- Events on personal calendar -#}
+
+      {%- set events = TodaysEvents['calendar.personal'].events
+      -%}
+
+      {%- set ns = namespace(msg='') -%}
+
+      {%- set ns.msg = ' There are ' ~ events | count ~ ' upcoming events on
+      your calendar, ' -%}
+
+      {%- for e in events -%}
+        {%- set dt = e.start | as_datetime | as_local -%}
+        {%- set h = dt.strftime('%-I') -%}
+        {%- set m = dt.strftime(':%M') -%}
+        {%- set p = dt.strftime('%p') -%}
+        {%- set ns.msg = ns.msg ~ '{} At {}{} {}, '.format(e.summary, 'all-day event' if h == "0" else h, '' if m == ":00" else m, p) -%}
+      {%- endfor -%}
+
+      {{ ns.msg }}
+
+
+      {#- Events on family calendar -#}
+
+      {%- set events = FamilyEvents['calendar.family_calendar'].events -%}
+
+      {%- if events | count > 0 -%}
+        {%- set ns = namespace(msg='') -%}
+        {%- set ns.msg = 'There are ' ~ events | count ~ ' events on the family calendar.' -%}
+        {{ ns.msg }}
+      {%- endif -%}
+
+
+      {# {%- set events = FamilyEvents['calendar.family_calendar'].events -%}
+
+      {%- if events != '' -%}
+
+      {%- set ns = namespace(msg='') -%}
+
+      {%- set ns.msg = 'There are ' ~ events | count ~ ' events on the family
+      calendar, ' -%}
+
+      {{ ns.msg }}
+
+      {%- endif -%} #}
+
+
+      {#- Traffic conditions -#}
+       currently there is {{states.sensor.bentonville_traffic.state }} in your area.
+    enabled: true
+mode: single

@@ -1,0 +1,35 @@
+# This automation uses sleep for android to get the next android alarm.
+alias: Goodnight
+description: ""
+triggers:
+  - trigger: conversation
+    command:
+      - "[jarvis] (goodnight|good night) [jarvis]"
+      - "[jarvis] night [night] [jarvis]"
+    id: goodnight
+conditions: []
+actions:
+  - set_conversation_response: |
+      {% if states.sensor.s22_aa_next_alarm.state != 'unknown' %}
+        {#- getting time -#}
+        {%- set dt = states.sensor.s22_aa_next_alarm.state | as_datetime | as_local -%}
+        {%- set h = dt.strftime('%-I') -%}
+        {%- set m = dt.strftime(':%M') -%}
+        {%- set p = dt.strftime('%p') -%}
+        {%- set msg = '{}{} {}'.format('all-day event' if h == "0" else h, '' if m == ":00" else m, p) -%}
+        
+        {#- determining if alarm is tomorrow -#}
+        {%- set d = dt.strftime('%-d') -%}
+        {%- set n = now().strftime('%-d') -%}
+
+        {%- if n | int + 1 == d | int -%} Your alarm is set for  {{ msg }} tomorrow
+        {%- elif n | int == d | int -%} Your alarm is set for {{ msg }} tonight
+        {%- endif -%}
+      {%- else %} You have no wake up alarm set for tomorrow
+      {%- endif -%}. Goodnight Sir.
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id: script.turn_off_media_room_lights
+    data: {}
+mode: single

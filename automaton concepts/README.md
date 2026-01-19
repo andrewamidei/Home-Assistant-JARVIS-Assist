@@ -1,0 +1,1 @@
+Here is a list of automatons I custom made to use this voice assistant speaker from day to day. These automatons need a little work to get them working with your own setup but the core idea of the automation can be grasped from these files.

@@ -1,0 +1,70 @@
+alias: Media Controls
+description: ""
+triggers:
+  - trigger: conversation
+    command:
+      - play [the] [music|song|track]
+      - resume [the] [music|song|track]
+      - start [the] [music|song|track]
+    id: resume
+  - trigger: conversation
+    command:
+      - "[pause|paws] [the] [music|song|track]"
+      - stop [the] [music|song|track]
+    id: pause
+  - trigger: conversation
+    command:
+      - skip [the] [music|song|track]
+      - next [song|track]
+    id: skip
+  - trigger: conversation
+    command:
+      - rewind [the] [music|song|track]
+      - back
+      - Previous [music|song|track]
+    id: back
+conditions: []
+actions:
+  - set_conversation_response: ""
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - resume
+        sequence:
+          - action: media_player.media_play
+            metadata: {}
+            target:
+              entity_id: media_player.esp_s3_jarvis_speaker_2
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - pause
+        sequence:
+          - action: media_player.media_pause
+            metadata: {}
+            data: {}
+            target:
+              entity_id: media_player.esp_s3_jarvis_speaker_2
+      - conditions:
+          - condition: trigger
+            id:
+              - skip
+        sequence:
+          - action: media_player.media_next_track
+            metadata: {}
+            target:
+              entity_id: media_player.esp_s3_jarvis_speaker_2
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - back
+        sequence:
+          - action: media_player.media_previous_track
+            metadata: {}
+            target:
+              entity_id: media_player.esp_s3_jarvis_speaker_2
+            data: {}
+mode: single

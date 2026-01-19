@@ -1,0 +1,90 @@
+# This automation takes a snapshot of the devices in the media room and
+# then turns them all off. When you announce you are back the scene is
+# applied to the room and all devices return to there last state.
+alias: Media room presence memory
+description: ""
+triggers:
+  - trigger: conversation
+    command:
+      - See [you|ya] [later]
+      - later
+      - bye
+    id: see you later
+  - trigger: conversation
+    command:
+      - i'm back
+      - back
+      - "[i'm] here"
+    id: im back
+  - trigger: conversation
+    command:
+      - "[jarvis] wake up daddy's home [jarvis]"
+    id: wake up daddy's home
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - see you later
+        sequence:
+          - set_conversation_response: See you soon sir
+          - action: scene.create
+            metadata: {}
+            data:
+              scene_id: media_room_lighting
+              snapshot_entities:
+                - switch.p11_switch
+                - switch.p1
+                - light.media_room_lights
+                - switch.s4
+                - light.bedroom_lamp
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - action: switch.turn_off
+            metadata: {}
+            target:
+              entity_id:
+                - switch.p11_switch
+                - switch.s4
+                - switch.p1
+            data: {}
+          - action: light.turn_off
+            metadata: {}
+            target:
+              entity_id: light.bedroom_lamp
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - im back
+        sequence:
+          - set_conversation_response: Welcome back sir
+          - action: scene.turn_on
+            metadata: {}
+            target:
+              entity_id: scene.media_room_lighting
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - wake up daddy's home
+        sequence:
+          - action: music_assistant.play_media
+            metadata: {}
+            data:
+              media_id: Should I Stay or Should I Go
+              media_type: track
+              enqueue: replace
+            target:
+              entity_id: media_player.esp_s3_jarvis_speaker_2
+          - action: scene.turn_on
+            metadata: {}
+            target:
+              entity_id: scene.media_room_lighting
+            data: {}
+          - set_conversation_response: Welcome home, sir.
+mode: single
